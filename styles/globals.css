@@ -1,9 +1,15 @@
+:root {
+  --bodyBg: #fafafa;
+  --menuBg: #282965;
+  --progressBar: #14fad8;
+}
 html,
 body {
   padding: 0;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  background: var(--bodyBg);
 }
 
 a {
@@ -13,4 +19,21 @@ a {
 
 * {
   box-sizing: border-box;
+}
+/* Make the entire page show a busy cursor */
+.nprogress-busy body {
+  cursor: wait;
+}
+
+#menu {
+  background: var(--menuBg);
+}
+
+/* Overrides default styled accordion styles (too much bottom padding) */
+.ui.styled.accordion .content {
+  margin: 0;
+  padding: 0.5em 1em 0.75em !important;
+}
+.ui.menu {
+  border-radius: 0;
 }
