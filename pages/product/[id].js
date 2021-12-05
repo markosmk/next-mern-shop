@@ -1,10 +1,13 @@
 import axios from 'axios'
+import ProductAttributes from '../../components/Product/ProductAttributes'
+import ProductSummary from '../../components/Product/ProductSummary'
 
 function Product({ product }) {
   return (
-    <div>
-      <h1>Producto: {product?.name}</h1>
-    </div>
+    <>
+      <ProductSummary {...product} />
+      <ProductAttributes {...product} />
+    </>
   )
 }
 
