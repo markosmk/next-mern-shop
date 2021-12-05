@@ -1,6 +1,7 @@
 import axios from 'axios'
 import ProductAttributes from '../../components/Product/ProductAttributes'
 import ProductSummary from '../../components/Product/ProductSummary'
+import baseUrl from '../../utils/baseUrl'
 
 function Product({ product }) {
   return (
@@ -13,7 +14,7 @@ function Product({ product }) {
 
 export async function getStaticPaths() {
   // Call an external API endpoint to get products
-  const { data } = await axios('http://localhost:3000/api/products')
+  const { data } = await axios(`${baseUrl}/api/products`)
 
   // Get the paths we want to pr-render based on products
   const paths = data.map((item) => {
@@ -30,7 +31,7 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
   // params contains the product id
-  const url = `http://localhost:3000/api/product/${params.id}`
+  const url = `${baseUrl}/api/product/${params.id}`
   // Call an external api endpoint to get products
   const { data } = await axios.get(url)
 
