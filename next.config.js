@@ -1,9 +1,8 @@
 module.exports = {
-  reactStrictMode: true,
+  // reactStrictMode: true,
   env: {
-    MONGO_SV:
-      'mongodb+srv://makc:lkI2yZOEqMCgEtbb@apiecommerce.u4cjt.mongodb.net/mern-next?retryWrites=true&w=majority',
-    JWT_SECRET: '',
-    CLOUDINARY_URL: '',
+    MONGO_SV: process.env.MONGO,
+    JWT_SECRET: process.env.JWT_SECRET,
+    CLOUDINARY_URL: process.env.CLOUDINARY_URL,
   },
 }
