@@ -1,16 +1,12 @@
 import axios from 'axios'
+import ProductList from '../components/Index/ProductList'
 
 function Home({ products }) {
-  console.log(products)
+  // console.log(products)
   return (
     <div>
       <div>Home</div>
-      {products.map((item) => (
-        <div key={item.sku}>
-          <h1>{item.name}</h1>
-          <p>{item.description}</p>
-        </div>
-      ))}
+      <ProductList products={products} />
     </div>
   )
 }
