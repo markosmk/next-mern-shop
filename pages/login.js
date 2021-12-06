@@ -9,6 +9,9 @@ import {
   Segment,
 } from 'semantic-ui-react'
 import catchErrors from '../utils/catchErrors'
+import baseUrl from '../utils/baseUrl'
+import axios from 'axios'
+import { handleLogin } from '../utils/auth'
 
 const INITIAL_DATA = {
   email: '',
@@ -40,7 +43,9 @@ function Login() {
     try {
       setError('')
       // make request to login user
-      console.log(form)
+      const url = `${baseUrl}/api/login`
+      const { data } = await axios.post(url, { ...form })
+      handleLogin(data)
     } catch (error) {
       catchErrors(error, setError)
     } finally {
