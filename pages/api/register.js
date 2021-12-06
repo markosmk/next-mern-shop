@@ -1,5 +1,6 @@
 import connectDb from '../../utils/connectDb'
 import User from '../../models/User'
+import Cart from '../../models/Cart'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import isEmail from 'validator/lib/isEmail'
@@ -25,18 +26,22 @@ async function register(req, res) {
     // 2- if not, hash their password
     const pass = await bcrypt.hash(password, 10)
     // 3- create user'
-    const newUser = new User({
+    const newUser = await new User({
       name,
       email,
       password: pass,
     }).save()
+    // 4- create cart for new user
+    const cartUser = await new Cart({
+      user: newUser._id,
+    }).save()
 
-    if (newUser) {
-      // 4- create token for the new user
+    if (newUser && cartUser) {
+      // 5- create token for the new user
       const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, {
         expiresIn: '30m',
       })
-      // 5- send back token'
+      // 6- send back token
       res.status(201).json({ token })
     }
   } catch (error) {
