@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import shortid from 'shortid'
 
-const ProductsSchema = new mongoose.Schema({
+const productsSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -26,4 +26,4 @@ const ProductsSchema = new mongoose.Schema({
 })
 
 export default mongoose.models.Product ||
-  mongoose.model('Product', ProductsSchema)
+  mongoose.model('Product', productsSchema)
