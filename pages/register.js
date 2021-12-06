@@ -2,6 +2,9 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { Button, Form, Icon, Message, Segment } from 'semantic-ui-react'
 import catchErrors from '../utils/catchErrors'
+import axios from 'axios'
+import { handleLogin } from '../utils/auth'
+import baseUrl from '../utils/baseUrl'
 
 const INITIAL_DATA = {
   name: '',
@@ -34,7 +37,10 @@ function Register() {
     try {
       setError('')
       // make request to register new user
-      console.log(form)
+      const url = `${baseUrl}/api/register`
+      const { data } = await axios.post(url, { ...form })
+      handleLogin(data)
+      console.log(data)
     } catch (error) {
       catchErrors(error, setError)
     } finally {
