@@ -5,9 +5,12 @@ import Layout from '../components/_App/Layout'
 import 'semantic-ui-css/semantic.min.css'
 import '../styles/globals.css'
 import '../styles/nprogress.css'
+import App from 'next/app'
+import { authCheck } from '../utils/auth'
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps, user }) {
   const router = useRouter()
+
   useEffect(() => {
     const handleStart = (url) => {
       console.log(`Loading: ${url}`)
@@ -27,10 +30,22 @@ function MyApp({ Component, pageProps }) {
   }, [router])
 
   return (
-    <Layout>
+    <Layout user={user}>
       <Component {...pageProps} />
     </Layout>
   )
+}
+
+MyApp.getInitialProps = async (appContext) => {
+  // calls page's `getInitialProps` and fills `appProps.pageProps`
+  const appProps = await App.getInitialProps(appContext)
+  // check protect routes
+  const protectedRoutes = ['/account', '/create']
+  const user = await authCheck(appContext.ctx, protectedRoutes)
+  // If logged in, allow protected pages
+  appProps.user = user ? user : false
+
+  return { ...appProps }
 }
 
 export default MyApp
