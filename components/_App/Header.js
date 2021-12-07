@@ -2,9 +2,8 @@ import { Container, Image, Menu, Icon } from 'semantic-ui-react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
-function Header() {
+function Header({ user }) {
   const router = useRouter()
-  const user = true
 
   function isActive(route) {
     return route === router.pathname
