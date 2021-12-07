@@ -11,7 +11,16 @@ import { authCheck } from '../utils/auth'
 function MyApp({ Component, pageProps, user }) {
   const router = useRouter()
 
+  const syncLogout = (event) => {
+    if (event.key === 'logout') {
+      console.log('logout from of storage')
+      router.push('/login')
+    }
+  }
+
   useEffect(() => {
+    window.addEventListener('storage', syncLogout)
+
     const handleStart = (url) => {
       console.log(`Loading: ${url}`)
       nProgress.start()

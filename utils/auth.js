@@ -18,6 +18,12 @@ export function handleLogin({ token }) {
   }
 }
 
+export function handleLogout() {
+  Cookies.remove('token')
+  window.localStorage.setItem('logout', Date.now())
+  Router.push({ pathname: '/' })
+}
+
 export function redirectUser(ctx, location) {
   if (typeof window === 'undefined' || ctx.req) {
     ctx.res.writeHead(302, { Location: location })
@@ -52,12 +58,23 @@ export async function authCheck(ctx, protectedRoutes = []) {
       const options = { headers: { Authorization: token } }
       const url = `${baseUrl}/api/account`
       const { data } = await axios.get(url, options)
+
+      // 4- if authenticated, but not of role 'admin' or 'root' redirect from '/create' page
+      const isRoot = data.role === 'root'
+      const isAdmin = data.role === 'admin'
+
+      const isNotPermitted = !(isRoot || isAdmin) && ctx.pathname === '/create'
+
+      if (isNotPermitted) {
+        redirectUser(ctx, '/')
+      }
+
       return data
     } catch (error) {
       console.log('Error: ', error.message)
-      // 4- if there was an error, we remove the invalid token
+      // 5- if there was an error, we remove the invalid token
       destroyCookie(ctx, 'token')
-      // 5- and redirect to login page
+      // 6- and redirect to login page
       redirectUser(ctx, '/login')
     }
   }
