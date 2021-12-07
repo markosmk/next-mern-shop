@@ -1,9 +1,13 @@
 import { Container, Image, Menu, Icon } from 'semantic-ui-react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { handleLogout } from '../../utils/auth'
 
 function Header({ user }) {
   const router = useRouter()
+  const isAdmin = user && user.role === 'admin'
+  const isRoot = user && user.role === 'root'
+  const isRootOrAdmin = isRoot || isAdmin
 
   function isActive(route) {
     return route === router.pathname
@@ -30,7 +34,7 @@ function Header({ user }) {
           </Menu.Item>
         </Link>
 
-        {user && (
+        {isRootOrAdmin && (
           <Link href="/create" passHref active={isActive('/create')}>
             <Menu.Item header>
               <Icon name="add square" size="large" />
@@ -47,7 +51,7 @@ function Header({ user }) {
                 Account
               </Menu.Item>
             </Link>
-            <Menu.Item header>
+            <Menu.Item header onClick={handleLogout}>
               <Icon name="sign out" size="large" />
               Logout
             </Menu.Item>
