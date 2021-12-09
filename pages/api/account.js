@@ -3,6 +3,11 @@ import jwt from 'jsonwebtoken'
 import connectDb from '../../utils/connectDb'
 
 async function account(req, res) {
+  // if (req.method === 'GET') {
+  //   if (!req.headers.cookie) {
+  //     return res.status(403).json({message: 'Not Authorized'})
+  //   }
+  // }
   if (!('authorization' in req.headers)) {
     return res.status(401).send('Authorization header missing')
   }
@@ -14,7 +19,8 @@ async function account(req, res) {
     //Validates user token
     const decoded = jwt.verify(token, process.env.JWT_SECRET)
     if (!decoded) {
-      return res.status(404).send('Invalid Token')
+      throw new Error('El token no se decodifico')
+      // return res.status(404).send('Invalid Token')
     }
     const user = await User.findById(decoded.userId)
     if (user) {
@@ -23,7 +29,7 @@ async function account(req, res) {
       res.status(404).send('User not found')
     }
   } catch (error) {
-    res.status(403).send('Invalid Token')
+    res.status(403).send('Invalid Token: message: ' + error.message)
   }
 }
 
