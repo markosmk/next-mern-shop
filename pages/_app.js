@@ -1,14 +1,14 @@
 import { useEffect } from 'react'
+import App from 'next/app'
 import { useRouter } from 'next/router'
+import { AuthProvider, getUser } from '../utils/context'
 import nProgress from 'nprogress'
 import Layout from '../components/_App/Layout'
 import 'semantic-ui-css/semantic.min.css'
 import '../styles/globals.css'
 import '../styles/nprogress.css'
-import App from 'next/app'
-import { authCheck } from '../utils/auth'
 
-function MyApp({ Component, pageProps, user }) {
+function MyApp({ Component, pageProps, auth }) {
   const router = useRouter()
 
   const syncLogout = (event) => {
@@ -36,12 +36,15 @@ function MyApp({ Component, pageProps, user }) {
       router.events.off('routeChangeComplete', handleStop)
       router.events.off('routeChangeError', handleStop)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router])
 
   return (
-    <Layout user={user}>
-      <Component {...pageProps} />
-    </Layout>
+    <AuthProvider myAuth={auth}>
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
+    </AuthProvider>
   )
 }
 
@@ -49,12 +52,8 @@ MyApp.getInitialProps = async (appContext) => {
   // calls page's `getInitialProps` and fills `appProps.pageProps`
   const appProps = await App.getInitialProps(appContext)
   // check protect routes
-  const protectedRoutes = ['/account', '/create']
-  const user = await authCheck(appContext.ctx, protectedRoutes)
-  // If logged in, allow protected pages
-  appProps.user = user ? user : false
-
-  return { ...appProps }
+  const auth = await getUser(appContext.ctx)
+  return { ...appProps, auth: auth }
 }
 
 export default MyApp

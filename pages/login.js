@@ -1,17 +1,8 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import {
-  Button,
-  Form,
-  FormSelect,
-  Icon,
-  Message,
-  Segment,
-} from 'semantic-ui-react'
+import { Button, Form, Icon, Message, Segment } from 'semantic-ui-react'
 import catchErrors from '../utils/catchErrors'
-import baseUrl from '../utils/baseUrl'
-import axios from 'axios'
-import { handleLogin } from '../utils/auth'
+import { useAuth } from '../utils/context'
 
 const INITIAL_DATA = {
   email: '',
@@ -23,6 +14,7 @@ function Login() {
   const [disabled, setDisabled] = useState(true)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const { login } = useAuth()
 
   useEffect(() => {
     const isUser = Object.values(form).every((el) => Boolean(el))
@@ -43,9 +35,7 @@ function Login() {
     try {
       setError('')
       // make request to login user
-      const url = `${baseUrl}/api/login`
-      const { data } = await axios.post(url, { ...form })
-      handleLogin(data)
+      login(form.email, form.password)
     } catch (error) {
       catchErrors(error, setError)
     } finally {
