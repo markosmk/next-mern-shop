@@ -121,42 +121,6 @@ const AuthProvider = ({ children, myAuth }) => {
     return data*/
   }
 
-  // const [state, dispatch] = useReducer(rootReducer, initialState)
-  // const [user, setUser] = useState(null)
-  // const [isLoggedin, setIsLoggedin] = useState(loggedin)
-
-  // useEffect(() => {
-  //   checkUserLoggedIn()
-  // }, [])
-
-  // revisamos si el usuario esta loggeado
-  // primero se revisa la caducidad de la cookie,
-  /*
-  const checkUserLoggedIn = async () => {
-    // const token = ctx.req.headers.cookie?.replace('token=', '')
-    //to get a token cookie
-    const token = Cookies.get('token')
-    console.log('context cookie', token)
-
-    if (!token) {
-      //const isProtectedRoute = protectedRoutes
-      //if (isProtectedRoute.includes(ctx.pathname)) {
-      //redirectUser(ctx, '/login')
-      console.log('no hay token y es un area protegida')
-      return
-      //}
-    }
-
-    try {
-      const options = { headers: { Authorization: token } }
-      const { data } = await axios.get(`${baseUrl}/api/account`, options)
-      setUser(data)
-    } catch (error) {
-      setUser(null)
-    }
-  }
-  */
-
   const values = useMemo(
     () => ({
       auth, // Estado que sera visible en el contexto
