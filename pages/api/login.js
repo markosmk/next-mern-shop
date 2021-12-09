@@ -20,8 +20,9 @@ async function login(req, res) {
       const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
         expiresIn: '30m',
       })
-      // 5- send that token to the client
-      res.status(200).json({ token })
+      // 5- send that token and userData to the client
+      const { password, ...useData } = user
+      res.status(200).json({ token, user: useData })
     } else {
       res.status(401).send('Password do not match')
     }
